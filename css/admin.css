@@ -1,0 +1,242 @@
+.pagina-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--charcoal-2);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 28px 24px;
+}
+
+.login-card h1 {
+  font-size: 28px;
+  color: var(--cream);
+  text-align: center;
+}
+
+.login-subtitulo {
+  text-align: center;
+  color: var(--smoke);
+  font-size: 13px;
+  margin: 4px 0 20px;
+}
+
+.login-error {
+  color: var(--ember);
+  font-size: 13px;
+  text-align: center;
+  margin: 0;
+}
+
+.login-volver {
+  display: block;
+  text-align: center;
+  margin-top: 18px;
+}
+
+/* Panel admin (shell general, se reutiliza en pedidos/productos/historias) */
+.pagina-admin {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.admin-header h1 {
+  font-size: 26px;
+  color: var(--cream);
+}
+
+.btn-logout {
+  background: var(--charcoal-3);
+  border: 1px solid var(--line);
+  color: var(--cream);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.btn-logout:hover {
+  border-color: var(--ember);
+}
+
+.admin-bienvenida {
+  color: var(--smoke);
+  font-size: 13px;
+  margin: 0 0 20px;
+}
+
+.admin-pendiente {
+  color: var(--smoke);
+  font-size: 13.5px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+/* Pestañas del panel admin */
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0 20px;
+  border-bottom: 1px solid var(--line);
+}
+.admin-tab {
+  padding: 10px 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--smoke);
+  border-bottom: 2px solid transparent;
+}
+.admin-tab.activo {
+  color: var(--mustard);
+  border-bottom-color: var(--ember);
+}
+
+.admin-seccion-titulo {
+  font-size: 20px;
+  color: var(--mustard);
+  margin-bottom: 14px;
+}
+
+.admin-vacio {
+  color: var(--smoke);
+  text-align: center;
+  padding: 30px 0;
+}
+
+/* Tarjetas de pedido */
+.pedido-card {
+  background: var(--charcoal-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.pedido-card-cerrado {
+  opacity: 0.55;
+}
+
+.pedido-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.pedido-codigo {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--cream);
+  letter-spacing: 0.03em;
+}
+
+.pedido-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.pedido-badge-pendiente_pago {
+  background: rgba(242, 166, 35, 0.15);
+  color: var(--mustard);
+}
+.pedido-badge-pago_confirmado,
+.pedido-badge-preparando {
+  background: rgba(232, 93, 37, 0.18);
+  color: var(--ember);
+}
+.pedido-badge-listo {
+  background: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+}
+.pedido-badge-entregado {
+  background: rgba(166, 156, 143, 0.15);
+  color: var(--smoke);
+}
+.pedido-badge-cancelado {
+  background: rgba(229, 72, 77, 0.15);
+  color: #e5484d;
+}
+
+.pedido-cliente {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cream);
+  margin: 4px 0 2px;
+}
+.pedido-hora {
+  font-size: 11px;
+  color: var(--smoke);
+  margin: 0 0 8px;
+}
+.pedido-entrega,
+.pedido-notas {
+  font-size: 12.5px;
+  color: var(--smoke);
+  margin: 2px 0;
+}
+
+.pedido-items {
+  list-style: none;
+  margin: 10px 0;
+  padding: 10px 14px;
+  background: var(--charcoal-3);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.pedido-items li {
+  padding: 2px 0;
+}
+
+.pedido-total {
+  font-weight: 700;
+  color: var(--mustard);
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+.pedido-acciones {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.btn-avanzar {
+  flex: 1;
+  background: var(--ember);
+  color: var(--cream);
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.btn-avanzar:hover {
+  background: var(--ember-dark);
+}
+
+.btn-cancelar {
+  background: var(--charcoal-3);
+  border: 1px solid var(--line);
+  color: var(--smoke);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.btn-cancelar:hover {
+  color: var(--ember);
+  border-color: var(--ember);
+}
