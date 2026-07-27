@@ -240,3 +240,258 @@
   color: var(--ember);
   border-color: var(--ember);
 }
+
+/* Switch de disponible/activa, reutilizado en productos e historias */
+.admin-toggle {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+  flex: none;
+}
+.admin-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.admin-toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--charcoal-3);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.admin-toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 2px;
+  top: 2px;
+  background: var(--smoke);
+  border-radius: 50%;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.admin-toggle input:checked + .admin-toggle-slider {
+  background: rgba(232, 93, 37, 0.25);
+  border-color: var(--ember);
+}
+.admin-toggle input:checked + .admin-toggle-slider::before {
+  transform: translateX(18px);
+  background: var(--ember);
+}
+
+/* Sección y fila de producto en el admin */
+.admin-categoria-seccion {
+  margin-bottom: 22px;
+}
+.admin-categoria-titulo {
+  font-size: 15px;
+  color: var(--mustard);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+
+.admin-producto-fila {
+  background: var(--charcoal-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.admin-producto-vista {
+  display: grid;
+  grid-template-columns: 52px 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.admin-producto-imagen {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--charcoal-3);
+}
+.admin-producto-imagen-pendiente {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--smoke);
+}
+
+.admin-producto-nombre {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cream);
+  margin: 0;
+}
+.admin-producto-precio {
+  font-size: 12.5px;
+  color: var(--mustard);
+  margin: 2px 0 0;
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.btn-editar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  color: var(--smoke);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-editar:hover {
+  border-color: var(--ember);
+  color: var(--ember);
+}
+
+.admin-producto-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.admin-form-fila {
+  display: flex;
+  gap: 10px;
+}
+.admin-form-fila .campo {
+  flex: 1;
+}
+.admin-form-acciones {
+  display: flex;
+  gap: 8px;
+}
+.admin-btn-guardar {
+  flex: 1;
+}
+
+/* Historias del admin */
+.admin-historia-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--charcoal-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.admin-historias-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-historia-fila {
+  display: grid;
+  grid-template-columns: 52px 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  background: var(--charcoal-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+}
+.admin-historia-inactiva {
+  opacity: 0.5;
+}
+
+.admin-historia-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--charcoal-3);
+}
+
+.admin-historia-texto {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--cream);
+  margin: 0;
+}
+.admin-historia-expira {
+  font-size: 11.5px;
+  color: var(--smoke);
+  margin: 2px 0 0;
+}
+
+.admin-imagen-actual {
+  font-size: 11.5px;
+  color: var(--smoke);
+}
+
+.input-archivo {
+  padding: 8px;
+  font-size: 13px;
+}
+
+/* Agrupado de pedidos por fecha */
+.admin-dia-seccion {
+  margin-bottom: 22px;
+}
+
+.admin-dia-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 4px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.admin-dia-fecha {
+  font-size: 15px;
+  color: var(--cream);
+  text-transform: capitalize;
+}
+.admin-dia-total {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--mustard);
+}
+
+/* Zonas de entrega */
+.admin-zona-fila {
+  background: var(--charcoal-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+}
+.admin-zona-vista {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 12px;
+  align-items: center;
+}
+.admin-zona-nombre {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cream);
+}
+.admin-zona-costo {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--mustard);
+}
+.admin-zona-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}

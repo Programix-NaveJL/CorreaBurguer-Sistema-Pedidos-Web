@@ -93,6 +93,33 @@ async function cargarProductos(container) {
       if (producto) agregarProducto(producto);
     });
   });
+
+  lista.querySelectorAll('img.producto-imagen').forEach((img) => {
+    img.addEventListener('click', () => abrirVisorImagen(img.src, img.alt));
+  });
+}
+
+function abrirVisorImagen(url, alt) {
+  const overlay = document.createElement('div');
+  overlay.className = 'visor-imagen-overlay';
+  overlay.innerHTML = `
+    <button class="visor-imagen-cerrar" aria-label="Cerrar">✕</button>
+    <img src="${url}" alt="${alt}" class="visor-imagen-grande">
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+
+  function cerrar() {
+    document.body.style.overflow = '';
+    overlay.remove();
+  }
+
+  overlay.addEventListener('click', (evento) => {
+    if (evento.target === overlay || evento.target.classList.contains('visor-imagen-cerrar')) {
+      cerrar();
+    }
+  });
 }
 
 function renderSeccionCategoria(categoria, productos) {

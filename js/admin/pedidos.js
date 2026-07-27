@@ -1,4 +1,5 @@
 import { supabase } from '../supabaseClient.js';
+import { RESTAURANTE, calcularDistanciaKm } from '../utils/distancia.js';
 
 const ETIQUETA_ESTADO = {
   pendiente_pago: 'Pendiente de pago',
@@ -50,8 +51,47 @@ async function cargarPedidos(container) {
     return;
   }
 
-  lista.innerHTML = pedidos.map(renderTarjetaPedido).join('');
+  const grupos = agruparPorFecha(pedidos);
+  lista.innerHTML = grupos.map(renderGrupoDia).join('');
   montarBotonesEstado(lista);
+}
+
+function agruparPorFecha(pedidos) {
+  const mapa = new Map();
+
+  for (const pedido of pedidos) {
+    const clave = new Date(pedido.created_at).toLocaleDateString('es-MX', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+
+    if (!mapa.has(clave)) mapa.set(clave, []);
+    mapa.get(clave).push(pedido);
+  }
+
+  // Map conserva el orden de inserción, y como pedidos ya viene
+  // ordenado por created_at descendente, los grupos salen del día
+  // más reciente al más antiguo sin necesidad de ordenar de nuevo.
+  return Array.from(mapa.entries()).map(([fecha, pedidosDelDia]) => ({ fecha, pedidosDelDia }));
+}
+
+function renderGrupoDia({ fecha, pedidosDelDia }) {
+  // "Vendido" cuenta desde que el pago se confirma en adelante —
+  // no incluye pendientes de pago (aún no es dinero real) ni cancelados.
+  const vendidoDelDia = pedidosDelDia
+    .filter((p) => p.estado !== 'pendiente_pago' && p.estado !== 'cancelado')
+    .reduce((suma, p) => suma + Number(p.total), 0);
+
+  return `
+    <section class="admin-dia-seccion">
+      <div class="admin-dia-header">
+        <h3 class="admin-dia-fecha">${fecha}</h3>
+        <span class="admin-dia-total">Vendido: $${vendidoDelDia.toFixed(2)}</span>
+      </div>
+      ${pedidosDelDia.map(renderTarjetaPedido).join('')}
+    </section>
+  `;
 }
 
 function renderTarjetaPedido(pedido) {
@@ -68,7 +108,11 @@ function renderTarjetaPedido(pedido) {
 
   const entregaHtml =
     pedido.tipo_entrega === 'domicilio'
-      ? `<p class="pedido-entrega">📍 Domicilio: ${pedido.direccion ?? ''}</p>`
+      ? `<p class="pedido-entrega">📍 Domicilio (${
+          pedido.cliente_lat && pedido.cliente_lng
+            ? `${calcularDistanciaKm(pedido.cliente_lat, pedido.cliente_lng, RESTAURANTE.lat, RESTAURANTE.lng).toFixed(1)} km`
+            : 'sin ubicación'
+        }): ${pedido.direccion ?? ''}</p>`
       : `<p class="pedido-entrega">🏪 Recoger en el local</p>`;
 
   return `
@@ -87,6 +131,11 @@ function renderTarjetaPedido(pedido) {
       <ul class="pedido-items">${itemsHtml}</ul>
 
       <p class="pedido-total">Total: $${Number(pedido.total).toFixed(2)}</p>
+      ${
+        pedido.metodo_pago === 'efectivo'
+          ? `<p class="pedido-notas">💵 Efectivo — paga con $${Number(pedido.monto_efectivo).toFixed(2)}, cambio: $${Number(pedido.cambio).toFixed(2)}</p>`
+          : `<p class="pedido-notas">💳 Transferencia</p>`
+      }
 
       ${
         activo

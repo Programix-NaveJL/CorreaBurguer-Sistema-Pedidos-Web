@@ -1,4 +1,5 @@
 import { supabase } from '../supabaseClient.js';
+import { subirImagenR2 } from '../utils/subirImagenR2.js';
 
 const NOMBRE_CATEGORIA = {
   hamburguesas: 'Hamburguesas',
@@ -96,8 +97,14 @@ function renderFilaProducto(producto) {
           </label>
         </div>
         <label class="campo">
-          <span>URL de la imagen (pégala del bucket de R2 mientras no haya subida directa)</span>
-          <input type="url" name="imagen_url" value="${producto.imagen_url ?? ''}" placeholder="https://pub-xxxx.r2.dev/productos/...">
+          <span>Foto del producto</span>
+          <input type="file" name="archivo_imagen" accept="image/*" class="input-archivo">
+          <input type="hidden" name="imagen_url" value="${producto.imagen_url ?? ''}">
+          ${
+            producto.imagen_url
+              ? `<span class="admin-imagen-actual">Ya tiene foto — selecciona otra solo si quieres reemplazarla.</span>`
+              : `<span class="admin-imagen-actual">Sin foto todavía.</span>`
+          }
         </label>
 
         <div class="admin-form-acciones">
@@ -144,18 +151,32 @@ function montarEventos(container, lista) {
       evento.preventDefault();
       const datos = new FormData(form);
       const id = form.dataset.id;
+      const archivo = datos.get('archivo_imagen');
+
+      const botonGuardar = form.querySelector('.admin-btn-guardar');
+      botonGuardar.disabled = true;
+
+      let imagenUrl = datos.get('imagen_url') || null;
+
+      if (archivo && archivo.size > 0) {
+        botonGuardar.textContent = 'Subiendo foto...';
+        try {
+          imagenUrl = await subirImagenR2({ archivo, carpeta: 'productos', nombreBase: id });
+        } catch (error) {
+          console.error('Error subiendo la imagen:', error);
+          alert('No se pudo subir la foto. Se van a guardar los demás cambios sin actualizar la imagen.');
+        }
+      }
+
+      botonGuardar.textContent = 'Guardando...';
 
       const cambios = {
         nombre: datos.get('nombre').trim(),
         descripcion: datos.get('descripcion').trim() || null,
         precio: parseFloat(datos.get('precio')),
         precio_anterior: datos.get('precio_anterior') ? parseFloat(datos.get('precio_anterior')) : null,
-        imagen_url: datos.get('imagen_url').trim() || null,
+        imagen_url: imagenUrl,
       };
-
-      const botonGuardar = form.querySelector('.admin-btn-guardar');
-      botonGuardar.disabled = true;
-      botonGuardar.textContent = 'Guardando...';
 
       const { error } = await supabase.from('productos').update(cambios).eq('id', id);
 
