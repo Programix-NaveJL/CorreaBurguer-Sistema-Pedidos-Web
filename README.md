@@ -10,7 +10,7 @@
   </p>
 
   <p>
-    <a href="https://programix-navejl.github.io/CorreaBurguer-Sistema-PedidosWeb/" target="_blank">
+    <a href="https://programix-navejl.github.io/CorreaBurguer-Sistema-Pedidos-Web/" target="_blank">
       <img src="https://img.shields.io/badge/🚀_Ver_Demo_En_Vivo-Ver_Sitio-brightgreen?style=for-the-badge" alt="Demo en Vivo" />
     </a>
   </p>
