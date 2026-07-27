@@ -1,7 +1,7 @@
 <div align="center">
 
   <!-- Logo del Negocio -->
-  <img src="https://programix-navejl.github.io/CorreaBurguer-Sistema-PedidosWeb/assets/logo.webp" alt="Correa Burguer Logo" width="160" style="border-radius: 50%;" />
+  <img src="https://programix-navejl.github.io/CorreaBurguer-Sistema-Pedidos-Web/assets/logo.webp" alt="Correa Burguer Logo" width="160" style="border-radius: 50%;" />
 
   <h1>Correa Burguer - Sistema de Pedidos Web & Comandera Digital</h1>
 
