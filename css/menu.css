@@ -701,13 +701,7 @@
   flex: 1;
 }
 
-/* Acceso discreto al panel admin, al fondo del menú del cliente */
-.menu-footer {
-  display: flex;
-  justify-content: center;
-  padding: 24px 0 8px;
-}
-
+/* Acceso discreto al panel admin + crédito, al fondo del menú del cliente */
 .menu-footer-admin {
   color: var(--smoke);
   opacity: 0.35;
@@ -835,4 +829,32 @@ img.producto-imagen {
 }
 .visor-imagen-cerrar:hover {
   background: rgba(255, 255, 255, 0.22);
+}
+
+.menu-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 0 8px;
+}
+
+.menu-footer-credito {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--smoke);
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+.menu-footer-credito:hover {
+  opacity: 0.9;
+  color: var(--ember);
+}
+.menu-footer-logo {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  object-fit: cover;
 }

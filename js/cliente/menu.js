@@ -35,6 +35,10 @@ export async function render(container) {
         <a href="#/admin" class="menu-footer-admin" aria-label="Panel admin" title="Panel admin">
           ${iconoEngrane()}
         </a>
+        <a href="https://programix-navejl.github.io/Programix-NaveJL-Pagina-Oficial/" target="_blank" rel="noopener" class="menu-footer-credito">
+          <img src="./assets/programix.png" alt="Programix NaveJL" class="menu-footer-logo">
+          Programix NaveJL · 2026
+        </a>
       </footer>
     </div>
 
