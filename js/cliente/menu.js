@@ -37,7 +37,7 @@ export async function render(container) {
         </a>
         <a href="https://programix-navejl.github.io/Programix-NaveJL-Pagina-Oficial/" target="_blank" rel="noopener" class="menu-footer-credito">
           <img src="./assets/programix.png" alt="Programix NaveJL" class="menu-footer-logo">
-          Programix NaveJL · 2026
+          Hecho por Programix NaveJL · 2026
         </a>
       </footer>
     </div>
@@ -84,8 +84,15 @@ async function cargarProductos(container) {
   const categoriasConProductos = ORDEN_CATEGORIAS.filter((cat) => porCategoria[cat]?.length);
 
   nav.innerHTML = categoriasConProductos
-    .map((cat) => `<a href="#cat-${cat}" class="pill">${NOMBRE_CATEGORIA[cat]}</a>`)
+    .map((cat) => `<button type="button" class="pill" data-cat="${cat}">${NOMBRE_CATEGORIA[cat]}</button>`)
     .join('');
+
+  nav.querySelectorAll('.pill').forEach((boton) => {
+    boton.addEventListener('click', () => {
+      const seccion = lista.querySelector(`#cat-${boton.dataset.cat}`);
+      seccion?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 
   lista.innerHTML = categoriasConProductos
     .map((cat) => renderSeccionCategoria(cat, porCategoria[cat]))

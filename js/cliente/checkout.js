@@ -421,13 +421,16 @@ export async function render(container) {
       resultado.innerHTML = renderConfirmacion(
         pedido,
         nombre,
+        telefono,
         pedido.total,
         tipoEntrega,
         referencias,
         zonaSeleccionada,
         metodoPago,
         montoEfectivo,
-        items
+        items,
+        clienteLat,
+        clienteLng
       );
       montarBotonesCopiar(resultado);
       montarBotonCaptura(resultado, pedido.codigo_pedido);
@@ -440,7 +443,79 @@ export async function render(container) {
   });
 }
 
-function renderConfirmacion(pedido, nombre, totalRaw, tipoEntrega, referencias, zonaSeleccionada, metodoPago, montoEfectivo, items) {
+function construirMensajeWhatsApp({
+  pedido,
+  nombre,
+  telefono,
+  total,
+  tipoEntrega,
+  referencias,
+  zonaSeleccionada,
+  metodoPago,
+  montoEfectivo,
+  items,
+  clienteLat,
+  clienteLng,
+}) {
+  // Se usan escapes Unicode (\u{...}) en vez del emoji literal, para
+  // que nunca se corrompan sin importar por dónde pase el texto.
+  const EMOJI_HAMBURGUESA = '🍔'; // 🍔
+  const EMOJI_UBICACION = '📍'; // 📍
+  const EMOJI_LOCAL = '🏪'; // 🏪
+  const EMOJI_EFECTIVO = '💵'; // 💵
+  const EMOJI_TARJETA = '💳'; // 💳
+  const EMOJI_ENVIAR = '📤'; // 📤
+
+  const lineas = [];
+
+  lineas.push(`${EMOJI_HAMBURGUESA} *Pedido ${pedido.codigo_pedido}*`);
+  lineas.push(`Cliente: ${nombre}${telefono ? ` (${telefono})` : ''}`);
+  lineas.push('');
+  lineas.push('*Productos:*');
+  items.forEach((item) => {
+    lineas.push(`• ${item.cantidad}x ${item.nombre} — $${(item.precio * item.cantidad).toFixed(2)}`);
+  });
+  lineas.push('');
+
+  if (tipoEntrega === 'domicilio') {
+    lineas.push(`${EMOJI_UBICACION} *Entrega a domicilio* (${zonaSeleccionada?.nombre ?? ''}, +$${Number(zonaSeleccionada?.costo ?? 0).toFixed(2)})`);
+    lineas.push(`Referencias: ${referencias}`);
+    if (clienteLat && clienteLng) {
+      lineas.push(`Ubicación: https://www.google.com/maps?q=${clienteLat},${clienteLng}`);
+    }
+  } else {
+    lineas.push(`${EMOJI_LOCAL} *Recoge en el local*`);
+  }
+
+  lineas.push('');
+
+  if (metodoPago === 'efectivo') {
+    const cambio = montoEfectivo - total;
+    lineas.push(`${EMOJI_EFECTIVO} *Paga en efectivo* — lleva con $${montoEfectivo.toFixed(2)}, cambio: $${cambio.toFixed(2)}`);
+  } else {
+    lineas.push(`${EMOJI_TARJETA} *Paga por transferencia* — comprobante abajo`);
+  }
+
+  lineas.push('');
+  lineas.push(`*Total: $${total.toFixed(2)}*`);
+
+  return { texto: lineas.join('\n'), emojiEnviar: EMOJI_ENVIAR };
+}
+
+function renderConfirmacion(
+  pedido,
+  nombre,
+  telefono,
+  totalRaw,
+  tipoEntrega,
+  referencias,
+  zonaSeleccionada,
+  metodoPago,
+  montoEfectivo,
+  items,
+  clienteLat,
+  clienteLng
+) {
   const total = Number(totalRaw);
 
   const filaEntrega =
@@ -472,6 +547,32 @@ function renderConfirmacion(pedido, nombre, totalRaw, tipoEntrega, referencias, 
     </button>
   `;
 
+  const mensajeWhatsApp = construirMensajeWhatsApp({
+    pedido,
+    nombre,
+    telefono,
+    total,
+    tipoEntrega,
+    referencias,
+    zonaSeleccionada,
+    metodoPago,
+    montoEfectivo,
+    items,
+    clienteLat,
+    clienteLng,
+  });
+
+  const botonWhatsApp = `
+    <a
+      class="btn-continuar btn-whatsapp no-captura"
+      href="https://wa.me/${WHATSAPP_NEGOCIO}?text=${encodeURIComponent(mensajeWhatsApp.texto)}"
+      target="_blank"
+      rel="noopener"
+    >
+      ${mensajeWhatsApp.emojiEnviar} Enviar pedido a WhatsApp
+    </a>
+  `;
+
   if (metodoPago === 'efectivo') {
     const cambio = montoEfectivo - total;
     return `
@@ -488,6 +589,8 @@ function renderConfirmacion(pedido, nombre, totalRaw, tipoEntrega, referencias, 
 
         <p class="checkout-total-final">Total: $${total.toFixed(2)}</p>
 
+        ${botonWhatsApp}
+
         ${botonCaptura}
 
         <a href="#/menu" class="carrito-volver no-captura" style="display:block; text-align:center; margin-top:16px;">
@@ -498,13 +601,12 @@ function renderConfirmacion(pedido, nombre, totalRaw, tipoEntrega, referencias, 
   }
 
   const concepto = `Pedido ${pedido.codigo_pedido}`;
-  const mensaje = `Hola, soy ${nombre}, mi pedido es ${pedido.codigo_pedido} por $${total.toFixed(2)}, aquí está mi comprobante`;
 
   return `
     <div class="checkout-confirmacion">
       <h2 class="checkout-codigo">${pedido.codigo_pedido}</h2>
       ${filaEntrega}
-      <p class="checkout-instrucciones">Transfiere el total a esta cuenta y comparte tu comprobante por WhatsApp:</p>
+      <p class="checkout-instrucciones">Transfiere el total a esta cuenta, y luego abre WhatsApp para avisarle al negocio y mandar tu comprobante:</p>
 
       <div class="checkout-clabe">
         <span>${CLABE_NEGOCIO}</span>
@@ -519,21 +621,15 @@ function renderConfirmacion(pedido, nombre, totalRaw, tipoEntrega, referencias, 
         </div>
       </label>
 
-      <label class="campo">
-        <span>Mensaje para WhatsApp</span>
-        <div class="checkout-caja-copiar">
-          <textarea readonly>${mensaje}</textarea>
-          <button type="button" class="btn-copiar no-captura" data-copiar="${mensaje}">Copiar</button>
-        </div>
-      </label>
-
       ${detalleItems}
 
       <p class="checkout-total-final">Total: $${total.toFixed(2)}</p>
 
-      <a class="btn-continuar btn-whatsapp no-captura" href="https://wa.me/${WHATSAPP_NEGOCIO}" target="_blank" rel="noopener">
-        Abrir WhatsApp
-      </a>
+      ${botonWhatsApp}
+
+      <p class="checkout-instrucciones" style="margin-top:8px;">
+        El mensaje ya va a llegar con todo el detalle de tu pedido — solo falta que adjuntes la foto de tu comprobante antes de enviar.
+      </p>
 
       ${botonCaptura}
 

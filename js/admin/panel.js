@@ -1,8 +1,6 @@
 import { supabase } from '../supabaseClient.js';
 
 const TABS = [
-  { id: 'pedidos', etiqueta: 'Pedidos', modulo: () => import('./pedidos.js') },
-  { id: 'repartidor', etiqueta: 'Repartidor', modulo: () => import('./repartidor.js') },
   { id: 'productos', etiqueta: 'Productos', modulo: () => import('./productos.js') },
   { id: 'zonas', etiqueta: 'Zonas de entrega', modulo: () => import('./zonas-entrega.js') },
   { id: 'historias', etiqueta: 'Historias', modulo: () => import('./historias-admin.js') },
