@@ -46,12 +46,13 @@ export async function render(container) {
       <div class="carrito-linea">
         <div class="carrito-linea-info">
           <span class="carrito-linea-nombre">${item.nombre}</span>
+          ${item.salsas?.length ? `<span class="carrito-linea-salsas">Salsas: ${item.salsas.join(', ')}</span>` : ''}
           <span class="carrito-linea-precio">$${item.precio.toFixed(2)} c/u</span>
         </div>
         <div class="carrito-linea-controles">
-          <button class="carrito-quitar" data-id="${item.producto_id}" aria-label="Quitar uno de ${item.nombre}">−</button>
+          <button class="carrito-quitar" data-clave="${item.clave}" aria-label="Quitar uno de ${item.nombre}">−</button>
           <span>${item.cantidad}</span>
-          <button class="carrito-agregar" data-id="${item.producto_id}" aria-label="Agregar uno más de ${item.nombre}">+</button>
+          <button class="carrito-agregar" data-clave="${item.clave}" aria-label="Agregar uno más de ${item.nombre}">+</button>
         </div>
         <span class="carrito-linea-subtotal">$${(item.precio * item.cantidad).toFixed(2)}</span>
       </div>
@@ -60,12 +61,14 @@ export async function render(container) {
       .join('');
 
     lista.querySelectorAll('.carrito-quitar').forEach((btn) =>
-      btn.addEventListener('click', () => quitarProducto(btn.dataset.id))
+      btn.addEventListener('click', () => quitarProducto(btn.dataset.clave))
     );
     lista.querySelectorAll('.carrito-agregar').forEach((btn) =>
       btn.addEventListener('click', () => {
-        const item = obtenerCarrito().find((i) => i.producto_id === btn.dataset.id);
-        if (item) agregarProducto({ id: item.producto_id, nombre: item.nombre, precio: item.precio });
+        const item = obtenerCarrito().find((i) => i.clave === btn.dataset.clave);
+        if (item) {
+          agregarProducto({ id: item.producto_id, nombre: item.nombre, precio: item.precio }, item.salsas);
+        }
       })
     );
   });

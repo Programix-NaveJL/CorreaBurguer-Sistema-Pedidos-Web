@@ -2,6 +2,7 @@ import { supabase } from '../supabaseClient.js';
 
 const TABS = [
   { id: 'productos', etiqueta: 'Productos', modulo: () => import('./productos.js') },
+  { id: 'salsas', etiqueta: 'Salsas', modulo: () => import('./salsas.js') },
   { id: 'zonas', etiqueta: 'Zonas de entrega', modulo: () => import('./zonas-entrega.js') },
   { id: 'historias', etiqueta: 'Historias', modulo: () => import('./historias-admin.js') },
 ];

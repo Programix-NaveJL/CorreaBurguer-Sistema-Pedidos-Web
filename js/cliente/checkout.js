@@ -2,7 +2,7 @@ import { supabase } from '../supabaseClient.js';
 import { obtenerCarrito, calcularTotal, vaciarCarrito } from '../estado.js';
 import { RESTAURANTE, calcularDistanciaKm } from '../utils/distancia.js';
 
-const CLABE_NEGOCIO = '000000000000000000';
+const CLABE_NEGOCIO = '012790015252960485';
 const WHATSAPP_NEGOCIO = '529934265708';
 
 function normalizarTexto(texto) {
@@ -409,6 +409,7 @@ export async function render(container) {
         p_items: items.map((item) => ({
           producto_id: item.producto_id,
           cantidad: item.cantidad,
+          salsas: item.salsas ?? [],
         })),
       });
 
@@ -459,12 +460,12 @@ function construirMensajeWhatsApp({
 }) {
   // Se usan escapes Unicode (\u{...}) en vez del emoji literal, para
   // que nunca se corrompan sin importar por dónde pase el texto.
-  const EMOJI_HAMBURGUESA = '🍔'; // 🍔
-  const EMOJI_UBICACION = '📍'; // 📍
-  const EMOJI_LOCAL = '🏪'; // 🏪
-  const EMOJI_EFECTIVO = '💵'; // 💵
-  const EMOJI_TARJETA = '💳'; // 💳
-  const EMOJI_ENVIAR = '📤'; // 📤
+  const EMOJI_HAMBURGUESA = '\u{1F354}'; // 🍔
+  const EMOJI_UBICACION = '\u{1F4CD}'; // 📍
+  const EMOJI_LOCAL = '\u{1F3EA}'; // 🏪
+  const EMOJI_EFECTIVO = '\u{1F4B5}'; // 💵
+  const EMOJI_TARJETA = '\u{1F4B3}'; // 💳
+  const EMOJI_ENVIAR = '\u{1F4E4}'; // 📤
 
   const lineas = [];
 
@@ -473,7 +474,8 @@ function construirMensajeWhatsApp({
   lineas.push('');
   lineas.push('*Productos:*');
   items.forEach((item) => {
-    lineas.push(`• ${item.cantidad}x ${item.nombre} — $${(item.precio * item.cantidad).toFixed(2)}`);
+    const salsasTexto = item.salsas?.length ? ` (${item.salsas.join(', ')})` : '';
+    lineas.push(`• ${item.cantidad}x ${item.nombre}${salsasTexto} — $${(item.precio * item.cantidad).toFixed(2)}`);
   });
   lineas.push('');
 
@@ -531,7 +533,7 @@ function renderConfirmacion(
           .map(
             (item) => `
           <li>
-            <span>${item.cantidad}× ${item.nombre}</span>
+            <span>${item.cantidad}× ${item.nombre}${item.salsas?.length ? `<br><small class="checkout-detalle-salsas">${item.salsas.join(', ')}</small>` : ''}</span>
             <span>$${(item.precio * item.cantidad).toFixed(2)}</span>
           </li>
         `

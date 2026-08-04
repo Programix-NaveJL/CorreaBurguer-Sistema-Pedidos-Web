@@ -2,7 +2,7 @@ import { supabase } from '../supabaseClient.js';
 import { suscribirCarrito, agregarProducto, calcularTotal } from '../estado.js';
 import { montarHistorias } from './historias.js';
 
-const ORDEN_CATEGORIAS = ['hamburguesas', 'hot_dogs', 'papas', 'alitas_boneles', 'combos'];
+const ORDEN_CATEGORIAS = ['hamburguesas', 'hot_dogs', 'papas', 'alitas_boneles', 'combos', 'bebidas'];
 
 const NOMBRE_CATEGORIA = {
   hamburguesas: 'Hamburguesas',
@@ -10,6 +10,7 @@ const NOMBRE_CATEGORIA = {
   papas: 'Papas',
   alitas_boneles: 'Alitas y boneles',
   combos: 'Combos',
+  bebidas: 'Bebidas',
 };
 
 export async function render(container) {
@@ -63,17 +64,18 @@ async function cargarProductos(container) {
   const lista = container.querySelector('#menu-lista');
   const nav = container.querySelector('#nav-categorias');
 
-  const { data: productos, error } = await supabase
-    .from('productos')
-    .select('*')
-    .eq('disponible', true)
-    .order('orden', { ascending: true });
+  const [{ data: productos, error }, { data: salsas }] = await Promise.all([
+    supabase.from('productos').select('*').eq('disponible', true).order('orden', { ascending: true }),
+    supabase.from('salsas').select('*').eq('activa', true).order('orden', { ascending: true }),
+  ]);
 
   if (error) {
     lista.innerHTML = '<p class="menu-error">No se pudo cargar el menú. Intenta recargar la página.</p>';
     console.error('Error cargando productos:', error);
     return;
   }
+
+  const salsasDisponibles = salsas ?? [];
 
   const porCategoria = {};
   for (const producto of productos) {
@@ -101,12 +103,83 @@ async function cargarProductos(container) {
   lista.querySelectorAll('.btn-agregar').forEach((boton) => {
     boton.addEventListener('click', () => {
       const producto = productos.find((p) => p.id === boton.dataset.id);
-      if (producto) agregarProducto(producto);
+      if (!producto) return;
+
+      if (producto.salsas_a_elegir > 0) {
+        abrirSelectorSalsas(producto, salsasDisponibles);
+      } else {
+        agregarProducto(producto);
+      }
     });
   });
 
   lista.querySelectorAll('img.producto-imagen').forEach((img) => {
     img.addEventListener('click', () => abrirVisorImagen(img.src, img.alt));
+  });
+}
+
+function abrirSelectorSalsas(producto, salsasDisponibles) {
+  const overlay = document.createElement('div');
+  overlay.className = 'salsas-overlay';
+
+  const maximo = producto.salsas_a_elegir;
+  const plural = maximo > 1 ? 'salsas' : 'salsa';
+
+  overlay.innerHTML = `
+    <div class="salsas-modal">
+      <h3 class="salsas-titulo">${producto.nombre}</h3>
+      <p class="salsas-subtitulo">Elige ${maximo} ${plural}</p>
+
+      <div class="salsas-opciones">
+        ${salsasDisponibles
+          .map(
+            (salsa) => `
+          <label class="salsa-opcion">
+            <input type="checkbox" name="salsa" value="${salsa.nombre}">
+            ${salsa.nombre}
+          </label>
+        `
+          )
+          .join('')}
+      </div>
+
+      <div class="salsas-acciones">
+        <button type="button" class="btn-continuar" id="btn-confirmar-salsas" disabled>Agregar al carrito</button>
+        <button type="button" class="btn-cancelar" id="btn-cancelar-salsas">Cancelar</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+
+  const checkboxes = [...overlay.querySelectorAll('input[name="salsa"]')];
+  const btnConfirmar = overlay.querySelector('#btn-confirmar-salsas');
+
+  function actualizarBloqueo() {
+    const seleccionadas = checkboxes.filter((c) => c.checked).length;
+    checkboxes.forEach((c) => {
+      if (!c.checked) c.disabled = seleccionadas >= maximo;
+    });
+    btnConfirmar.disabled = seleccionadas !== maximo;
+  }
+
+  checkboxes.forEach((c) => c.addEventListener('change', actualizarBloqueo));
+
+  function cerrar() {
+    document.body.style.overflow = '';
+    overlay.remove();
+  }
+
+  overlay.querySelector('#btn-cancelar-salsas').addEventListener('click', cerrar);
+  overlay.addEventListener('click', (evento) => {
+    if (evento.target === overlay) cerrar();
+  });
+
+  btnConfirmar.addEventListener('click', () => {
+    const salsasElegidas = checkboxes.filter((c) => c.checked).map((c) => c.value);
+    agregarProducto(producto, salsasElegidas);
+    cerrar();
   });
 }
 
@@ -153,12 +226,18 @@ function renderTarjetaProducto(producto) {
     ? `<span class="precio-anterior">$${Number(producto.precio_anterior).toFixed(2)}</span>`
     : '';
 
+  const etiquetaSalsas =
+    producto.salsas_a_elegir > 0
+      ? `<span class="producto-etiqueta-salsas">Elige ${producto.salsas_a_elegir} salsa${producto.salsas_a_elegir > 1 ? 's' : ''}</span>`
+      : '';
+
   return `
     <article class="producto-card">
       ${imagen}
       <div class="producto-info">
         <h3 class="producto-nombre">${producto.nombre}</h3>
         <p class="producto-descripcion">${producto.descripcion ?? ''}</p>
+        ${etiquetaSalsas}
         <div class="producto-precio-fila">
           <span class="producto-precio">$${Number(producto.precio).toFixed(2)}</span>
           ${precioAnterior}

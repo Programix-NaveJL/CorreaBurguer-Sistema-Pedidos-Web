@@ -7,6 +7,7 @@ const NOMBRE_CATEGORIA = {
   papas: 'Papas',
   alitas_boneles: 'Alitas y boneles',
   combos: 'Combos',
+  bebidas: 'Bebidas',
 };
 const ORDEN_CATEGORIAS = Object.keys(NOMBRE_CATEGORIA);
 
@@ -68,7 +69,7 @@ function renderFilaProducto(producto) {
         ${imagen}
         <div class="admin-producto-info">
           <p class="admin-producto-nombre">${producto.nombre}</p>
-          <p class="admin-producto-precio">$${Number(producto.precio).toFixed(2)} ${precioAnterior}</p>
+          <p class="admin-producto-precio">$${Number(producto.precio).toFixed(2)} ${precioAnterior}${producto.salsas_a_elegir > 0 ? `<span class="admin-badge-salsas">Elige ${producto.salsas_a_elegir} salsa${producto.salsas_a_elegir > 1 ? 's' : ''}</span>` : ''}</p>
         </div>
         <label class="admin-toggle" title="Disponible">
           <input type="checkbox" class="input-disponible" data-id="${producto.id}" ${producto.disponible ? 'checked' : ''}>
@@ -96,6 +97,10 @@ function renderFilaProducto(producto) {
             <input type="number" step="0.01" name="precio_anterior" value="${producto.precio_anterior ?? ''}">
           </label>
         </div>
+        <label class="campo">
+          <span>Salsas a elegir (0 = no aplica)</span>
+          <input type="number" name="salsas_a_elegir" value="${producto.salsas_a_elegir ?? 0}" min="0" max="4">
+        </label>
         <label class="campo">
           <span>Foto del producto</span>
           <input type="file" name="archivo_imagen" accept="image/*" class="input-archivo">
@@ -175,6 +180,7 @@ function montarEventos(container, lista) {
         descripcion: datos.get('descripcion').trim() || null,
         precio: parseFloat(datos.get('precio')),
         precio_anterior: datos.get('precio_anterior') ? parseFloat(datos.get('precio_anterior')) : null,
+        salsas_a_elegir: parseInt(datos.get('salsas_a_elegir'), 10) || 0,
         imagen_url: imagenUrl,
       };
 

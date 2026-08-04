@@ -858,3 +858,115 @@ img.producto-imagen {
   border-radius: 3px;
   object-fit: cover;
 }
+
+/* Etiqueta de "elige N salsas" en la tarjeta */
+.producto-etiqueta-salsas {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--mustard);
+  background: rgba(242, 166, 35, 0.12);
+  border: 1px solid rgba(242, 166, 35, 0.3);
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin: 4px 0;
+}
+
+/* Modal de selección de salsas */
+.salsas-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 150;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+@media (min-width: 480px) {
+  .salsas-overlay {
+    align-items: center;
+    padding: 20px;
+  }
+}
+
+.salsas-modal {
+  width: 100%;
+  max-width: 420px;
+  background: var(--charcoal-2);
+  border: 1px solid var(--line);
+  border-radius: 16px 16px 0 0;
+  padding: 20px;
+}
+@media (min-width: 480px) {
+  .salsas-modal {
+    border-radius: 16px;
+  }
+}
+
+.salsas-titulo {
+  font-size: 22px;
+  color: var(--cream);
+}
+.salsas-subtitulo {
+  font-size: 13px;
+  color: var(--mustard);
+  margin: 4px 0 16px;
+  font-weight: 600;
+}
+
+.salsas-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.salsa-opcion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--cream);
+  cursor: pointer;
+}
+.salsa-opcion:has(input:checked) {
+  border-color: var(--ember);
+  background: rgba(232, 93, 37, 0.1);
+}
+.salsa-opcion:has(input:disabled) {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.salsa-opcion input {
+  accent-color: var(--ember);
+  width: 18px;
+  height: 18px;
+}
+
+.salsas-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+}
+.salsas-acciones .btn-cancelar {
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+/* Salsas elegidas, mostradas en el carrito */
+.carrito-linea-salsas {
+  font-size: 11.5px;
+  color: var(--mustard);
+}
+
+.checkout-detalle-salsas {
+  color: var(--smoke);
+  font-size: 11px;
+}
