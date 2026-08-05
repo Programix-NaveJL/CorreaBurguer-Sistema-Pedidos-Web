@@ -18,7 +18,10 @@ export async function render(container) {
   if (carrito.length === 0) {
     container.innerHTML = `
       <div class="pagina-carrito">
-        <p class="carrito-vacio-pagina">Tu carrito está vacío. <a href="#/menu">Ir al menú</a></p>
+        <p class="carrito-vacio-pagina">
+          Tu carrito está vacío.
+          <a href="#/menu">Ir al menú</a>
+        </p>
       </div>
     `;
     return;
@@ -27,28 +30,53 @@ export async function render(container) {
   container.innerHTML = `
     <div class="pagina-carrito">
       <a href="#/carrito" class="carrito-volver">&larr; Volver al carrito</a>
+
       <h1 style="margin-top:16px;">Confirmar pedido</h1>
 
       <form id="form-checkout" class="form-checkout">
+
         <label class="campo">
           <span>Tu nombre</span>
-          <input type="text" name="nombre" required maxlength="60" placeholder="¿Cómo te llamas?">
+          <input
+            type="text"
+            name="nombre"
+            required
+            maxlength="60"
+            placeholder="¿Cómo te llamas?"
+          >
         </label>
 
         <label class="campo">
           <span>Teléfono</span>
-          <input type="tel" name="telefono" required maxlength="15" placeholder="993 000 0000">
+          <input
+            type="tel"
+            name="telefono"
+            required
+            maxlength="15"
+            placeholder="993 000 0000"
+          >
         </label>
 
         <div class="campo">
           <span>¿Cómo lo quieres?</span>
+
           <div class="checkout-entrega-opciones">
             <label class="checkout-radio">
-              <input type="radio" name="tipo_entrega" value="recoger" checked>
+              <input
+                type="radio"
+                name="tipo_entrega"
+                value="recoger"
+                checked
+              >
               Recoger en el local
             </label>
+
             <label class="checkout-radio">
-              <input type="radio" name="tipo_entrega" value="domicilio">
+              <input
+                type="radio"
+                name="tipo_entrega"
+                value="domicilio"
+              >
               A domicilio
             </label>
           </div>
@@ -56,53 +84,125 @@ export async function render(container) {
 
         <div class="campo oculto" id="campo-colonia">
           <span>¿En qué colonia te encuentras?</span>
-          <div class="checkout-colonia-opciones" id="colonia-opciones"></div>
+
+          <div
+            class="checkout-colonia-opciones"
+            id="colonia-opciones"
+          ></div>
         </div>
 
         <label class="campo oculto" id="campo-referencias">
           <span>Referencias de domicilio</span>
-          <textarea name="direccion" maxlength="200" placeholder="Ej. Col. Espejo 1, casa azul, portón negro..."></textarea>
-          <p class="checkout-colonia-aviso oculto" id="aviso-colonia"></p>
-          <p class="checkout-ubicacion-nota oculto" id="ubicacion-nota"></p>
+
+          <textarea
+            name="direccion"
+            maxlength="200"
+            placeholder="Ej. Col. Espejo 1, casa azul, portón negro..."
+          ></textarea>
+
+          <p
+            class="checkout-colonia-aviso oculto"
+            id="aviso-colonia"
+          ></p>
+
+          <p
+            class="checkout-ubicacion-nota oculto"
+            id="ubicacion-nota"
+          ></p>
+
+          <button
+            type="button"
+            class="btn-cancelar oculto"
+            id="btn-reintentar-ubicacion"
+          >
+            📍 Reintentar ubicación
+          </button>
         </label>
 
         <div class="campo oculto" id="campo-distancia">
           <span>Distancia y costo de envío</span>
-          <p class="checkout-distancia-info" id="distancia-info">Calculando tu ubicación…</p>
-          <button type="button" class="btn-cancelar oculto" id="btn-reintentar-ubicacion">Reintentar ubicación</button>
+
+          <p
+            class="checkout-distancia-info"
+            id="distancia-info"
+          >
+            Calculando tu ubicación…
+          </p>
         </div>
 
         <label class="campo">
           <span>Notas para tu pedido (opcional)</span>
-          <textarea name="notas" maxlength="200" placeholder="Ej. sin cebolla..."></textarea>
+
+          <textarea
+            name="notas"
+            maxlength="200"
+            placeholder="Ej. sin cebolla..."
+          ></textarea>
         </label>
 
         <div class="campo">
           <span>¿Cómo vas a pagar?</span>
+
           <div class="checkout-entrega-opciones">
+
             <label class="checkout-radio">
-              <input type="radio" name="metodo_pago" value="transferencia" checked>
+              <input
+                type="radio"
+                name="metodo_pago"
+                value="transferencia"
+                checked
+              >
               Transferencia
             </label>
+
             <label class="checkout-radio">
-              <input type="radio" name="metodo_pago" value="efectivo">
+              <input
+                type="radio"
+                name="metodo_pago"
+                value="efectivo"
+              >
               Efectivo
             </label>
+
           </div>
         </div>
 
         <label class="campo oculto" id="campo-efectivo">
           <span>¿Con cuánto vas a pagar?</span>
-          <input type="number" name="monto_efectivo" min="0" step="1" placeholder="Ej. 200">
-          <p class="checkout-cambio-info" id="cambio-info"></p>
+
+          <input
+            type="number"
+            name="monto_efectivo"
+            min="0"
+            step="1"
+            placeholder="Ej. 200"
+          >
+
+          <p
+            class="checkout-cambio-info"
+            id="cambio-info"
+          ></p>
         </label>
 
         <div class="checkout-total-fila">
           <span>Total a pagar</span>
-          <span class="checkout-total-monto" id="checkout-total-monto">$${calcularTotal().toFixed(2)}</span>
+
+          <span
+            class="checkout-total-monto"
+            id="checkout-total-monto"
+          >
+            $${calcularTotal().toFixed(2)}
+          </span>
         </div>
 
-        <button type="submit" class="btn-continuar" id="btn-confirmar">Confirmar pedido</button>
+        <button
+          type="submit"
+          class="btn-continuar"
+          id="btn-confirmar"
+        >
+          Confirmar pedido
+        </button>
+
       </form>
 
       <div id="resultado-pedido"></div>
@@ -112,28 +212,59 @@ export async function render(container) {
   const form = container.querySelector('#form-checkout');
   const resultado = container.querySelector('#resultado-pedido');
   const btnConfirmar = container.querySelector('#btn-confirmar');
+
   const campoColonia = container.querySelector('#campo-colonia');
   const coloniaOpciones = container.querySelector('#colonia-opciones');
+
   const campoReferencias = container.querySelector('#campo-referencias');
-  const inputReferencias = campoReferencias.querySelector('textarea');
+  const inputReferencias =
+    campoReferencias.querySelector('textarea');
+
   const avisoColonia = container.querySelector('#aviso-colonia');
   const ubicacionNota = container.querySelector('#ubicacion-nota');
-  const campoDistancia = container.querySelector('#campo-distancia');
-  const distanciaInfo = container.querySelector('#distancia-info');
-  const btnReintentar = container.querySelector('#btn-reintentar-ubicacion');
-  const totalMontoEl = container.querySelector('#checkout-total-monto');
-  const radiosEntrega = container.querySelectorAll('input[name="tipo_entrega"]');
-  const radiosPago = container.querySelectorAll('input[name="metodo_pago"]');
-  const campoEfectivo = container.querySelector('#campo-efectivo');
-  const inputMontoEfectivo = campoEfectivo.querySelector('input[name="monto_efectivo"]');
-  const cambioInfo = container.querySelector('#cambio-info');
+
+  const campoDistancia =
+    container.querySelector('#campo-distancia');
+
+  const distanciaInfo =
+    container.querySelector('#distancia-info');
+
+  const btnReintentar =
+    container.querySelector('#btn-reintentar-ubicacion');
+
+  const totalMontoEl =
+    container.querySelector('#checkout-total-monto');
+
+  const radiosEntrega =
+    container.querySelectorAll('input[name="tipo_entrega"]');
+
+  const radiosPago =
+    container.querySelectorAll('input[name="metodo_pago"]');
+
+  const campoEfectivo =
+    container.querySelector('#campo-efectivo');
+
+  const inputMontoEfectivo =
+    campoEfectivo.querySelector(
+      'input[name="monto_efectivo"]'
+    );
+
+  const cambioInfo =
+    container.querySelector('#cambio-info');
 
   let zonas = [];
   let zonasColonia = [];
-  let zonaSeleccionada = null; // zona elegida (colonia conocida) o encontrada (por distancia)
+
+  let zonaSeleccionada = null;
+
   let esOtraColonia = false;
+
   let clienteLat = null;
   let clienteLng = null;
+
+  // ============================================================
+  // OBTENER ZONAS DE ENTREGA
+  // ============================================================
 
   const { data: zonasData, error: errorZonas } = await supabase
     .from('zonas_entrega')
@@ -143,53 +274,93 @@ export async function render(container) {
 
   if (!errorZonas) {
     zonas = zonasData;
-    zonasColonia = zonas.filter((z) => z.colonia_clave);
+    zonasColonia = zonas.filter(
+      (z) => z.colonia_clave
+    );
   }
 
   coloniaOpciones.innerHTML =
     zonasColonia
       .map(
         (zona) => `
-      <label class="checkout-radio">
-        <input type="radio" name="colonia" value="${zona.id}">
-        ${zona.nombre} — $${Number(zona.costo).toFixed(2)}
-      </label>
-    `
+          <label class="checkout-radio">
+            <input
+              type="radio"
+              name="colonia"
+              value="${zona.id}"
+            >
+            ${zona.nombre} — $${Number(zona.costo).toFixed(2)}
+          </label>
+        `
       )
       .join('') +
     `
-    <label class="checkout-radio">
-      <input type="radio" name="colonia" value="otra">
-      Mi colonia no está en la lista
-    </label>
-  `;
+      <label class="checkout-radio">
+        <input
+          type="radio"
+          name="colonia"
+          value="otra"
+        >
+        Mi colonia no está en la lista
+      </label>
+    `;
+
+  // ============================================================
+  // TOTAL
+  // ============================================================
 
   function totalActual() {
-    const costoEnvio = zonaSeleccionada ? Number(zonaSeleccionada.costo) : 0;
+    const costoEnvio = zonaSeleccionada
+      ? Number(zonaSeleccionada.costo)
+      : 0;
+
     return calcularTotal() + costoEnvio;
   }
 
   function actualizarTotalMostrado() {
-    totalMontoEl.textContent = `$${totalActual().toFixed(2)}`;
+    totalMontoEl.textContent =
+      `$${totalActual().toFixed(2)}`;
+
     actualizarCambio();
   }
 
-  function esEfectivoValido() {
-    const metodoPago = container.querySelector('input[name="metodo_pago"]:checked')?.value;
-    if (metodoPago !== 'efectivo') return true;
+  // ============================================================
+  // EFECTIVO
+  // ============================================================
 
-    const monto = parseFloat(inputMontoEfectivo.value);
-    return !Number.isNaN(monto) && monto >= totalActual();
+  function esEfectivoValido() {
+    const metodoPago =
+      container.querySelector(
+        'input[name="metodo_pago"]:checked'
+      )?.value;
+
+    if (metodoPago !== 'efectivo') {
+      return true;
+    }
+
+    const monto =
+      parseFloat(inputMontoEfectivo.value);
+
+    return (
+      !Number.isNaN(monto) &&
+      monto >= totalActual()
+    );
   }
 
   function actualizarCambio() {
-    const metodoPago = container.querySelector('input[name="metodo_pago"]:checked')?.value;
+    const metodoPago =
+      container.querySelector(
+        'input[name="metodo_pago"]:checked'
+      )?.value;
+
     if (metodoPago !== 'efectivo') {
       cambioInfo.classList.add('oculto');
       return;
     }
 
-    const monto = parseFloat(inputMontoEfectivo.value);
+    const monto =
+      parseFloat(inputMontoEfectivo.value);
+
     if (Number.isNaN(monto)) {
       cambioInfo.textContent = '';
       cambioInfo.classList.add('oculto');
@@ -197,50 +368,134 @@ export async function render(container) {
     }
 
     const total = totalActual();
+
     if (monto < total) {
-      cambioInfo.textContent = `Te falta cubrir el total ($${total.toFixed(2)}) — ajusta el monto.`;
-      cambioInfo.classList.remove('oculto', 'checkout-cambio-ok');
-      cambioInfo.classList.add('checkout-cambio-error');
+      cambioInfo.textContent =
+        `Te falta cubrir el total ($${total.toFixed(2)}) — ajusta el monto.`;
+
+      cambioInfo.classList.remove(
+        'oculto',
+        'checkout-cambio-ok'
+      );
+
+      cambioInfo.classList.add(
+        'checkout-cambio-error'
+      );
     } else {
       const cambio = monto - total;
-      cambioInfo.textContent = cambio > 0 ? `Tu cambio será de $${cambio.toFixed(2)}.` : 'Pago exacto, sin cambio.';
-      cambioInfo.classList.remove('oculto', 'checkout-cambio-error');
-      cambioInfo.classList.add('checkout-cambio-ok');
+
+      cambioInfo.textContent =
+        cambio > 0
+          ? `Tu cambio será de $${cambio.toFixed(2)}.`
+          : 'Pago exacto, sin cambio.';
+
+      cambioInfo.classList.remove(
+        'oculto',
+        'checkout-cambio-error'
+      );
+
+      cambioInfo.classList.add(
+        'checkout-cambio-ok'
+      );
     }
   }
 
+  // ============================================================
+  // VALIDAR REFERENCIAS
+  // ============================================================
+
   function verificarReferencias() {
-    if (esOtraColonia || !zonaSeleccionada?.colonia_clave) {
+    if (
+      esOtraColonia ||
+      !zonaSeleccionada?.colonia_clave
+    ) {
       avisoColonia.classList.add('oculto');
       return true;
     }
 
-    const texto = normalizarTexto(inputReferencias.value);
-    const clave = normalizarTexto(zonaSeleccionada.colonia_clave);
-    const coincide = texto.includes(clave);
+    const texto =
+      normalizarTexto(inputReferencias.value);
+
+    const clave =
+      normalizarTexto(
+        zonaSeleccionada.colonia_clave
+      );
+
+    const coincide =
+      texto.includes(clave);
 
     avisoColonia.textContent = coincide
       ? ''
       : `Tus referencias no mencionan "${zonaSeleccionada.nombre}" — agrégalo o corrige la colonia seleccionada.`;
-    avisoColonia.classList.toggle('oculto', coincide);
+
+    avisoColonia.classList.toggle(
+      'oculto',
+      coincide
+    );
 
     return coincide;
   }
 
+  // ============================================================
+  // VALIDAR BOTÓN CONFIRMAR
+  // ============================================================
+
   function actualizarEstadoBoton() {
-    const esDomicilio = container.querySelector('input[name="tipo_entrega"]:checked')?.value === 'domicilio';
+    const esDomicilio =
+      container.querySelector(
+        'input[name="tipo_entrega"]:checked'
+      )?.value === 'domicilio';
+
     let habilitado = true;
 
     if (esDomicilio) {
-      const coloniaElegida = coloniaOpciones.querySelector('input[name="colonia"]:checked');
+
+      // ========================================================
+      // UBICACIÓN OBLIGATORIA
+      // ========================================================
+
+      if (
+        clienteLat === null ||
+        clienteLng === null
+      ) {
+        habilitado = false;
+      }
+
+      // ========================================================
+      // COLONIA OBLIGATORIA
+      // ========================================================
+
+      const coloniaElegida =
+        coloniaOpciones.querySelector(
+          'input[name="colonia"]:checked'
+        );
+
       if (!coloniaElegida) {
         habilitado = false;
+
       } else if (esOtraColonia) {
-        habilitado = Boolean(zonaSeleccionada);
+
+        // Si no está en la lista, necesitamos
+        // encontrar una zona mediante distancia.
+
+        if (!zonaSeleccionada) {
+          habilitado = false;
+        }
+
       } else {
-        habilitado = verificarReferencias();
+
+        // Si la colonia sí está en la lista,
+        // validamos las referencias.
+
+        if (!verificarReferencias()) {
+          habilitado = false;
+        }
       }
     }
+
+    // ==========================================================
+    // VALIDAR EFECTIVO
+    // ==========================================================
 
     if (habilitado) {
       habilitado = esEfectivoValido();
@@ -249,200 +504,597 @@ export async function render(container) {
     btnConfirmar.disabled = !habilitado;
   }
 
-  function intentarUbicacionSilenciosa() {
-    if (!navigator.geolocation) return;
-
-    ubicacionNota.textContent = '📍 Obteniendo tu ubicación exacta para ayudar al repartidor…';
-    ubicacionNota.classList.remove('oculto');
-
-    navigator.geolocation.getCurrentPosition(
-      (posicion) => {
-        clienteLat = posicion.coords.latitude;
-        clienteLng = posicion.coords.longitude;
-        ubicacionNota.textContent = '📍 Ubicación exacta obtenida — ayuda al repartidor a encontrarte más fácil.';
-      },
-      (error) => {
-        console.error('No se pudo obtener ubicación silenciosa:', error);
-        ubicacionNota.textContent =
-          '⚠️ No pudimos obtener tu ubicación exacta (puede estar bloqueada en tu navegador). No es obligatorio, pero ayuda al repartidor a encontrarte más rápido.';
-      },
-      { enableHighAccuracy: true, timeout: 10000 }
-    );
-  }
+  // ============================================================
+  // SOLICITAR UBICACIÓN
+  // ============================================================
 
   function solicitarUbicacion() {
     zonaSeleccionada = null;
+
     btnReintentar.classList.add('oculto');
+
     actualizarEstadoBoton();
 
     if (!navigator.geolocation) {
-      distanciaInfo.textContent = 'Tu navegador no soporta ubicación automática. Contáctanos por WhatsApp para cotizar tu envío.';
+
+      ubicacionNota.textContent =
+        '⚠️ Tu navegador no soporta la ubicación automática. Para realizar un pedido a domicilio, necesitas usar un navegador compatible con geolocalización.';
+
+      ubicacionNota.classList.remove('oculto');
+
+      distanciaInfo.textContent =
+        'Tu navegador no soporta ubicación automática.';
+
+      actualizarEstadoBoton();
+
       return;
     }
 
-    distanciaInfo.textContent = 'Calculando tu distancia al local…';
+    // ==========================================================
+    // ESTADO: OBTENIENDO UBICACIÓN
+    // ==========================================================
+
+    ubicacionNota.textContent =
+      '📍 Obteniendo tu ubicación exacta…';
+
+    ubicacionNota.classList.remove('oculto');
+
+    distanciaInfo.textContent =
+      '📍 Calculando tu ubicación…';
+
+    // ==========================================================
+    // SOLICITAR PERMISO
+    // ==========================================================
 
     navigator.geolocation.getCurrentPosition(
+
+      // ========================================================
+      // ÉXITO
+      // ========================================================
+
       (posicion) => {
-        clienteLat = posicion.coords.latitude;
-        clienteLng = posicion.coords.longitude;
 
-        const distanciaKm = calcularDistanciaKm(clienteLat, clienteLng, RESTAURANTE.lat, RESTAURANTE.lng);
-        const zonaEncontrada = zonas
-          .filter((z) => z.distancia_min != null && z.distancia_max != null)
-          .find((z) => distanciaKm >= z.distancia_min && distanciaKm <= z.distancia_max);
+        clienteLat =
+          posicion.coords.latitude;
 
-        if (!zonaEncontrada) {
-          distanciaInfo.textContent = `📍 Estás a ${distanciaKm.toFixed(1)} km, fuera de nuestras zonas de entrega configuradas. Contáctanos por WhatsApp para cotizar tu envío.`;
+        clienteLng =
+          posicion.coords.longitude;
+
+        ubicacionNota.textContent =
+          '✅ Ubicación exacta obtenida. Puedes continuar con tu pedido.';
+
+        ubicacionNota.classList.remove(
+          'oculto'
+        );
+
+        btnReintentar.classList.add(
+          'oculto'
+        );
+
+        const distanciaKm =
+          calcularDistanciaKm(
+            clienteLat,
+            clienteLng,
+            RESTAURANTE.lat,
+            RESTAURANTE.lng
+          );
+
+        const zonaEncontrada =
+          zonas
+            .filter(
+              (z) =>
+                z.distancia_min != null &&
+                z.distancia_max != null
+            )
+            .find(
+              (z) =>
+                distanciaKm >= z.distancia_min &&
+                distanciaKm <= z.distancia_max
+            );
+
+        // ======================================================
+        // SI ES OTRA COLONIA
+        // ======================================================
+
+        if (esOtraColonia) {
+
+          if (!zonaEncontrada) {
+
+            distanciaInfo.textContent =
+              `📍 Estás a ${distanciaKm.toFixed(1)} km, fuera de nuestras zonas de entrega configuradas. Contáctanos por WhatsApp para cotizar tu envío.`;
+
+            zonaSeleccionada = null;
+
+            actualizarTotalMostrado();
+            actualizarEstadoBoton();
+
+            return;
+          }
+
+          zonaSeleccionada =
+            zonaEncontrada;
+
+          distanciaInfo.textContent =
+            `📍 Distancia detectada: ${distanciaKm.toFixed(1)} km — Costo de envío: $${Number(zonaEncontrada.costo).toFixed(2)} (${zonaEncontrada.nombre})`;
+
+          actualizarTotalMostrado();
           actualizarEstadoBoton();
+
           return;
         }
 
-        zonaSeleccionada = zonaEncontrada;
-        distanciaInfo.textContent = `📍 Distancia detectada: ${distanciaKm.toFixed(1)} km — Costo de envío: $${Number(zonaEncontrada.costo).toFixed(2)} (${zonaEncontrada.nombre})`;
+        // ======================================================
+        // SI LA COLONIA YA ESTÁ EN LA LISTA
+        // ======================================================
+
+        distanciaInfo.textContent =
+          `📍 Ubicación confirmada. Distancia aproximada al local: ${distanciaKm.toFixed(1)} km.`;
+
+        actualizarEstadoBoton();
+      },
+
+      // ========================================================
+      // ERROR
+      // ========================================================
+
+      (error) => {
+
+        console.error(
+          'Error obteniendo ubicación:',
+          error
+        );
+
+        clienteLat = null;
+        clienteLng = null;
+        zonaSeleccionada = null;
+
+        ubicacionNota.textContent =
+          '⚠️ Necesitamos tu ubicación para realizar la entrega a domicilio. Activa el permiso de ubicación y pulsa "Reintentar ubicación".';
+
+        ubicacionNota.classList.remove(
+          'oculto'
+        );
+
+        btnReintentar.classList.remove(
+          'oculto'
+        );
+
+        distanciaInfo.textContent =
+          '⚠️ No pudimos obtener tu ubicación. La necesitamos para realizar el pedido a domicilio.';
+
         actualizarTotalMostrado();
         actualizarEstadoBoton();
       },
-      (error) => {
-        console.error('Error obteniendo ubicación:', error);
-        distanciaInfo.textContent = 'No pudimos obtener tu ubicación. La necesitamos para calcular el envío fuera de las colonias conocidas.';
-        btnReintentar.classList.remove('oculto');
-        actualizarEstadoBoton();
-      },
-      { enableHighAccuracy: true, timeout: 10000 }
+
+      // ========================================================
+      // OPCIONES DE GEOLOCALIZACIÓN
+      // ========================================================
+
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
     );
   }
 
-  btnReintentar.addEventListener('click', solicitarUbicacion);
-  inputReferencias.addEventListener('input', () => {
-    actualizarEstadoBoton();
-  });
+  // ============================================================
+  // REINTENTAR UBICACIÓN
+  // ============================================================
+
+  btnReintentar.addEventListener(
+    'click',
+    solicitarUbicacion
+  );
+
+  // ============================================================
+  // REFERENCIAS
+  // ============================================================
+
+  inputReferencias.addEventListener(
+    'input',
+    () => {
+      actualizarEstadoBoton();
+    }
+  );
+
+  // ============================================================
+  // MÉTODO DE PAGO
+  // ============================================================
 
   radiosPago.forEach((radio) => {
-    radio.addEventListener('change', () => {
-      const esEfectivo = radio.value === 'efectivo' && radio.checked;
-      if (!radio.checked) return;
-      campoEfectivo.classList.toggle('oculto', !esEfectivo);
-      inputMontoEfectivo.required = esEfectivo;
+
+    radio.addEventListener(
+      'change',
+      () => {
+
+        const esEfectivo =
+          radio.value === 'efectivo' &&
+          radio.checked;
+
+        if (!radio.checked) return;
+
+        campoEfectivo.classList.toggle(
+          'oculto',
+          !esEfectivo
+        );
+
+        inputMontoEfectivo.required =
+          esEfectivo;
+
+        actualizarCambio();
+        actualizarEstadoBoton();
+      }
+    );
+  });
+
+  inputMontoEfectivo.addEventListener(
+    'input',
+    () => {
       actualizarCambio();
       actualizarEstadoBoton();
+    }
+  );
+
+  // ============================================================
+  // SELECCIÓN DE COLONIA
+  // ============================================================
+
+  coloniaOpciones
+    .querySelectorAll(
+      'input[name="colonia"]'
+    )
+    .forEach((radio) => {
+
+      radio.addEventListener(
+        'change',
+        () => {
+
+          esOtraColonia =
+            radio.value === 'otra';
+
+          campoDistancia.classList.toggle(
+            'oculto',
+            !esOtraColonia
+          );
+
+          if (esOtraColonia) {
+
+            zonaSeleccionada = null;
+
+            // Para "otra colonia", la ubicación
+            // también será obligatoria y servirá
+            // para calcular la zona.
+
+            solicitarUbicacion();
+
+          } else {
+
+            zonaSeleccionada =
+              zonasColonia.find(
+                (z) => z.id === radio.value
+              ) ?? null;
+
+            actualizarTotalMostrado();
+
+            actualizarEstadoBoton();
+          }
+        }
+      );
     });
-  });
 
-  inputMontoEfectivo.addEventListener('input', () => {
-    actualizarCambio();
-    actualizarEstadoBoton();
-  });
-
-  coloniaOpciones.querySelectorAll('input[name="colonia"]').forEach((radio) => {
-    radio.addEventListener('change', () => {
-      esOtraColonia = radio.value === 'otra';
-      campoDistancia.classList.toggle('oculto', !esOtraColonia);
-
-      if (esOtraColonia) {
-        zonaSeleccionada = null;
-        solicitarUbicacion();
-      } else {
-        zonaSeleccionada = zonasColonia.find((z) => z.id === radio.value) ?? null;
-        actualizarTotalMostrado();
-      }
-      actualizarEstadoBoton();
-    });
-  });
+  // ============================================================
+  // TIPO DE ENTREGA
+  // ============================================================
 
   radiosEntrega.forEach((radio) => {
-    radio.addEventListener('change', () => {
-      const esDomicilio = radio.value === 'domicilio' && radio.checked;
-      if (!radio.checked) return;
 
-      campoColonia.classList.toggle('oculto', !esDomicilio);
-      campoReferencias.classList.toggle('oculto', !esDomicilio);
-      campoDistancia.classList.add('oculto');
-      inputReferencias.required = esDomicilio;
+    radio.addEventListener(
+      'change',
+      () => {
 
-      if (esDomicilio) {
-        intentarUbicacionSilenciosa();
-      } else {
-        zonaSeleccionada = null;
-        esOtraColonia = false;
-        coloniaOpciones.querySelectorAll('input[name="colonia"]').forEach((r) => (r.checked = false));
-        avisoColonia.classList.add('oculto');
+        const esDomicilio =
+          radio.value === 'domicilio' &&
+          radio.checked;
+
+        if (!radio.checked) return;
+
+        campoColonia.classList.toggle(
+          'oculto',
+          !esDomicilio
+        );
+
+        campoReferencias.classList.toggle(
+          'oculto',
+          !esDomicilio
+        );
+
+        campoDistancia.classList.add(
+          'oculto'
+        );
+
+        inputReferencias.required =
+          esDomicilio;
+
+        if (esDomicilio) {
+
+          // ====================================================
+          // A DOMICILIO:
+          // LA UBICACIÓN ES OBLIGATORIA
+          // ====================================================
+
+          clienteLat = null;
+          clienteLng = null;
+
+          zonaSeleccionada = null;
+          esOtraColonia = false;
+
+          ubicacionNota.textContent =
+            '📍 Necesitamos tu ubicación exacta para realizar la entrega.';
+
+          ubicacionNota.classList.remove(
+            'oculto'
+          );
+
+          btnReintentar.classList.add(
+            'oculto'
+          );
+
+          solicitarUbicacion();
+
+        } else {
+
+          // ====================================================
+          // RECOGER EN LOCAL:
+          // LA UBICACIÓN YA NO ES NECESARIA
+          // ====================================================
+
+          clienteLat = null;
+          clienteLng = null;
+
+          zonaSeleccionada = null;
+          esOtraColonia = false;
+
+          coloniaOpciones
+            .querySelectorAll(
+              'input[name="colonia"]'
+            )
+            .forEach(
+              (r) => (r.checked = false)
+            );
+
+          avisoColonia.classList.add(
+            'oculto'
+          );
+
+          ubicacionNota.classList.add(
+            'oculto'
+          );
+
+          btnReintentar.classList.add(
+            'oculto'
+          );
+        }
+
+        actualizarTotalMostrado();
+        actualizarEstadoBoton();
       }
-
-      actualizarTotalMostrado();
-      actualizarEstadoBoton();
-    });
+    );
   });
+
+  // ============================================================
+  // ESTADO INICIAL
+  // ============================================================
 
   actualizarEstadoBoton();
 
-  form.addEventListener('submit', async (evento) => {
-    evento.preventDefault();
-    btnConfirmar.disabled = true;
-    btnConfirmar.textContent = 'Enviando...';
+  // ============================================================
+  // ENVIAR PEDIDO
+  // ============================================================
 
-    const datosForm = new FormData(form);
-    const nombre = datosForm.get('nombre').trim();
-    const telefono = datosForm.get('telefono').trim();
-    const notas = datosForm.get('notas').trim() || null;
-    const tipoEntrega = datosForm.get('tipo_entrega');
-    const referencias = datosForm.get('direccion')?.trim() || null;
-    const metodoPago = datosForm.get('metodo_pago');
-    const montoEfectivo = metodoPago === 'efectivo' ? parseFloat(datosForm.get('monto_efectivo')) : null;
+  form.addEventListener(
+    'submit',
+    async (evento) => {
 
-    const zonaEntregaId = tipoEntrega === 'domicilio' && !esOtraColonia ? zonaSeleccionada?.id ?? null : null;
+      evento.preventDefault();
 
-    const items = obtenerCarrito();
+      // ========================================================
+      // SEGUNDA PROTECCIÓN DE UBICACIÓN
+      // ========================================================
 
-    try {
-      const { data, error } = await supabase.rpc('crear_pedido', {
-        p_nombre: nombre,
-        p_telefono: telefono,
-        p_notas: notas,
-        p_tipo_entrega: tipoEntrega,
-        p_direccion: tipoEntrega === 'domicilio' ? referencias : null,
-        p_zona_entrega_id: zonaEntregaId,
-        p_cliente_lat: tipoEntrega === 'domicilio' ? clienteLat : null,
-        p_cliente_lng: tipoEntrega === 'domicilio' ? clienteLng : null,
-        p_metodo_pago: metodoPago,
-        p_monto_efectivo: montoEfectivo,
-        p_items: items.map((item) => ({
-          producto_id: item.producto_id,
-          cantidad: item.cantidad,
-          salsas: item.salsas ?? [],
-        })),
-      });
+      const tipoEntregaActual =
+        form.querySelector(
+          'input[name="tipo_entrega"]:checked'
+        )?.value;
 
-      if (error) throw error;
+      if (
+        tipoEntregaActual === 'domicilio' &&
+        (
+          clienteLat === null ||
+          clienteLng === null
+        )
+      ) {
 
-      const pedido = data[0];
+        resultado.innerHTML = `
+          <p class="checkout-error">
+            ⚠️ Para realizar un pedido a domicilio
+            necesitas permitir el acceso a tu ubicación.
+            Activa la ubicación en tu navegador y
+            vuelve a intentarlo.
+          </p>
+        `;
 
-      vaciarCarrito();
-      form.style.display = 'none';
-      resultado.innerHTML = renderConfirmacion(
-        pedido,
-        nombre,
-        telefono,
-        pedido.total,
-        tipoEntrega,
-        referencias,
-        zonaSeleccionada,
-        metodoPago,
-        montoEfectivo,
-        items,
-        clienteLat,
-        clienteLng
-      );
-      montarBotonesCopiar(resultado);
-      montarBotonCaptura(resultado, pedido.codigo_pedido);
-    } catch (error) {
-      console.error('Error creando el pedido:', error);
-      resultado.innerHTML = `<p class="checkout-error">${error.message || 'No se pudo enviar tu pedido. Intenta de nuevo.'}</p>`;
-      btnConfirmar.disabled = false;
-      btnConfirmar.textContent = 'Confirmar pedido';
+        btnConfirmar.disabled = true;
+        btnConfirmar.textContent =
+          'Confirmar pedido';
+
+        return;
+      }
+
+      // ========================================================
+      // DESHABILITAR BOTÓN
+      // ========================================================
+
+      btnConfirmar.disabled = true;
+      btnConfirmar.textContent =
+        'Enviando...';
+
+      // ========================================================
+      // FORMULARIO
+      // ========================================================
+
+      const datosForm =
+        new FormData(form);
+
+      const nombre =
+        datosForm.get('nombre').trim();
+
+      const telefono =
+        datosForm.get('telefono').trim();
+
+      const notas =
+        datosForm.get('notas').trim() || null;
+
+      const tipoEntrega =
+        datosForm.get('tipo_entrega');
+
+      const referencias =
+        datosForm.get('direccion')?.trim() ||
+        null;
+
+      const metodoPago =
+        datosForm.get('metodo_pago');
+
+      const montoEfectivo =
+        metodoPago === 'efectivo'
+          ? parseFloat(
+              datosForm.get(
+                'monto_efectivo'
+              )
+            )
+          : null;
+
+      const zonaEntregaId =
+        tipoEntrega === 'domicilio' &&
+        !esOtraColonia
+          ? zonaSeleccionada?.id ?? null
+          : null;
+
+      const items =
+        obtenerCarrito();
+
+      // ========================================================
+      // CREAR PEDIDO
+      // ========================================================
+
+      try {
+
+        const { data, error } =
+          await supabase.rpc(
+            'crear_pedido',
+            {
+              p_nombre: nombre,
+              p_telefono: telefono,
+              p_notas: notas,
+              p_tipo_entrega: tipoEntrega,
+
+              p_direccion:
+                tipoEntrega === 'domicilio'
+                  ? referencias
+                  : null,
+
+              p_zona_entrega_id:
+                zonaEntregaId,
+
+              p_cliente_lat:
+                tipoEntrega === 'domicilio'
+                  ? clienteLat
+                  : null,
+
+              p_cliente_lng:
+                tipoEntrega === 'domicilio'
+                  ? clienteLng
+                  : null,
+
+              p_metodo_pago:
+                metodoPago,
+
+              p_monto_efectivo:
+                montoEfectivo,
+
+              p_items:
+                items.map((item) => ({
+                  producto_id:
+                    item.producto_id,
+
+                  cantidad:
+                    item.cantidad,
+
+                  salsas:
+                    item.salsas ?? [],
+                })),
+            }
+          );
+
+        if (error) throw error;
+
+        const pedido = data[0];
+
+        vaciarCarrito();
+
+        form.style.display = 'none';
+
+        resultado.innerHTML =
+          renderConfirmacion(
+            pedido,
+            nombre,
+            telefono,
+            pedido.total,
+            tipoEntrega,
+            referencias,
+            zonaSeleccionada,
+            metodoPago,
+            montoEfectivo,
+            items,
+            clienteLat,
+            clienteLng
+          );
+
+        montarBotonesCopiar(
+          resultado
+        );
+
+        montarBotonCaptura(
+          resultado,
+          pedido.codigo_pedido
+        );
+
+      } catch (error) {
+
+        console.error(
+          'Error creando el pedido:',
+          error
+        );
+
+        resultado.innerHTML = `
+          <p class="checkout-error">
+            ${error.message ||
+            'No se pudo enviar tu pedido. Intenta de nuevo.'}
+          </p>
+        `;
+
+        btnConfirmar.disabled = false;
+
+        btnConfirmar.textContent =
+          'Confirmar pedido';
+      }
     }
-  });
+  );
 }
+
+// ================================================================
+// MENSAJE DE WHATSAPP
+// ================================================================
 
 function construirMensajeWhatsApp({
   pedido,
@@ -458,51 +1110,119 @@ function construirMensajeWhatsApp({
   clienteLat,
   clienteLng,
 }) {
-  // Se usan escapes Unicode (\u{...}) en vez del emoji literal, para
-  // que nunca se corrompan sin importar por dónde pase el texto.
-  const EMOJI_HAMBURGUESA = '\u{1F354}'; // 🍔
-  const EMOJI_UBICACION = '\u{1F4CD}'; // 📍
-  const EMOJI_LOCAL = '\u{1F3EA}'; // 🏪
-  const EMOJI_EFECTIVO = '\u{1F4B5}'; // 💵
-  const EMOJI_TARJETA = '\u{1F4B3}'; // 💳
-  const EMOJI_ENVIAR = '\u{1F4E4}'; // 📤
+
+  const EMOJI_HAMBURGUESA =
+    '\u{1F354}';
+
+  const EMOJI_UBICACION =
+    '\u{1F4CD}';
+
+  const EMOJI_LOCAL =
+    '\u{1F3EA}';
+
+  const EMOJI_EFECTIVO =
+    '\u{1F4B5}';
+
+  const EMOJI_TARJETA =
+    '\u{1F4B3}';
+
+  const EMOJI_ENVIAR =
+    '\u{1F4E4}';
 
   const lineas = [];
 
-  lineas.push(`${EMOJI_HAMBURGUESA} *Pedido ${pedido.codigo_pedido}*`);
-  lineas.push(`Cliente: ${nombre}${telefono ? ` (${telefono})` : ''}`);
+  lineas.push(
+    `${EMOJI_HAMBURGUESA} *Pedido ${pedido.codigo_pedido}*`
+  );
+
+  lineas.push(
+    `Cliente: ${nombre}${telefono ? ` (${telefono})` : ''}`
+  );
+
   lineas.push('');
+
   lineas.push('*Productos:*');
+
   items.forEach((item) => {
-    const salsasTexto = item.salsas?.length ? ` (${item.salsas.join(', ')})` : '';
-    lineas.push(`• ${item.cantidad}x ${item.nombre}${salsasTexto} — $${(item.precio * item.cantidad).toFixed(2)}`);
+
+    const salsasTexto =
+      item.salsas?.length
+        ? ` (${item.salsas.join(', ')})`
+        : '';
+
+    lineas.push(
+      `• ${item.cantidad}x ${item.nombre}${salsasTexto} — $${(
+        item.precio * item.cantidad
+      ).toFixed(2)}`
+    );
   });
+
   lineas.push('');
 
   if (tipoEntrega === 'domicilio') {
-    lineas.push(`${EMOJI_UBICACION} *Entrega a domicilio* (${zonaSeleccionada?.nombre ?? ''}, +$${Number(zonaSeleccionada?.costo ?? 0).toFixed(2)})`);
-    lineas.push(`Referencias: ${referencias}`);
-    if (clienteLat && clienteLng) {
-      lineas.push(`Ubicación: https://www.google.com/maps?q=${clienteLat},${clienteLng}`);
+
+    lineas.push(
+      `${EMOJI_UBICACION} *Entrega a domicilio* (${zonaSeleccionada?.nombre ?? ''}, +$${Number(
+        zonaSeleccionada?.costo ?? 0
+      ).toFixed(2)})`
+    );
+
+    lineas.push(
+      `Referencias: ${referencias}`
+    );
+
+    if (
+      clienteLat !== null &&
+      clienteLng !== null
+    ) {
+
+      lineas.push(
+        `Ubicación: https://www.google.com/maps?q=${clienteLat},${clienteLng}`
+      );
     }
+
   } else {
-    lineas.push(`${EMOJI_LOCAL} *Recoge en el local*`);
+
+    lineas.push(
+      `${EMOJI_LOCAL} *Recoge en el local*`
+    );
   }
 
   lineas.push('');
 
   if (metodoPago === 'efectivo') {
-    const cambio = montoEfectivo - total;
-    lineas.push(`${EMOJI_EFECTIVO} *Paga en efectivo* — lleva con $${montoEfectivo.toFixed(2)}, cambio: $${cambio.toFixed(2)}`);
+
+    const cambio =
+      montoEfectivo - total;
+
+    lineas.push(
+      `${EMOJI_EFECTIVO} *Paga en efectivo* — lleva con $${montoEfectivo.toFixed(
+        2
+      )}, cambio: $${cambio.toFixed(2)}`
+    );
+
   } else {
-    lineas.push(`${EMOJI_TARJETA} *Paga por transferencia* — comprobante abajo`);
+
+    lineas.push(
+      `${EMOJI_TARJETA} *Paga por transferencia* — comprobante abajo`
+    );
   }
 
   lineas.push('');
-  lineas.push(`*Total: $${total.toFixed(2)}*`);
 
-  return { texto: lineas.join('\n'), emojiEnviar: EMOJI_ENVIAR };
+  lineas.push(
+    `*Total: $${total.toFixed(2)}*`
+  );
+
+  return {
+    texto: lineas.join('\n'),
+    emojiEnviar: EMOJI_ENVIAR,
+  };
 }
+
+// ================================================================
+// CONFIRMACIÓN
+// ================================================================
 
 function renderConfirmacion(
   pedido,
@@ -518,179 +1238,419 @@ function renderConfirmacion(
   clienteLat,
   clienteLng
 ) {
-  const total = Number(totalRaw);
+
+  const total =
+    Number(totalRaw);
 
   const filaEntrega =
     tipoEntrega === 'domicilio'
-      ? `<p class="checkout-entrega-resumen"><strong>Entrega a domicilio (${zonaSeleccionada?.nombre ?? ''}, +$${Number(zonaSeleccionada?.costo ?? 0).toFixed(2)}):</strong> ${referencias}</p>`
-      : `<p class="checkout-entrega-resumen"><strong>Para recoger en el local.</strong></p>`;
+      ? `
+        <p class="checkout-entrega-resumen">
+          <strong>
+            Entrega a domicilio
+            (${zonaSeleccionada?.nombre ?? ''},
+            +$${Number(
+              zonaSeleccionada?.costo ?? 0
+            ).toFixed(2)}):
+          </strong>
+          ${referencias}
+        </p>
+      `
+      : `
+        <p class="checkout-entrega-resumen">
+          <strong>
+            Para recoger en el local.
+          </strong>
+        </p>
+      `;
 
   const detalleItems = `
     <div class="checkout-detalle-pedido">
-      <p class="checkout-detalle-titulo">Tu pedido</p>
+
+      <p class="checkout-detalle-titulo">
+        Tu pedido
+      </p>
+
       <ul class="checkout-detalle-lista">
+
         ${items
           .map(
             (item) => `
-          <li>
-            <span>${item.cantidad}× ${item.nombre}${item.salsas?.length ? `<br><small class="checkout-detalle-salsas">${item.salsas.join(', ')}</small>` : ''}</span>
-            <span>$${(item.precio * item.cantidad).toFixed(2)}</span>
-          </li>
-        `
+              <li>
+
+                <span>
+                  ${item.cantidad}× ${item.nombre}
+
+                  ${
+                    item.salsas?.length
+                      ? `
+                        <br>
+                        <small class="checkout-detalle-salsas">
+                          ${item.salsas.join(', ')}
+                        </small>
+                      `
+                      : ''
+                  }
+
+                </span>
+
+                <span>
+                  $${(
+                    item.precio *
+                    item.cantidad
+                  ).toFixed(2)}
+                </span>
+
+              </li>
+            `
           )
           .join('')}
+
       </ul>
+
     </div>
   `;
 
   const botonCaptura = `
-    <button type="button" class="btn-continuar btn-captura no-captura" id="btn-guardar-captura">
+    <button
+      type="button"
+      class="btn-continuar btn-captura no-captura"
+      id="btn-guardar-captura"
+    >
       📸 Guardar captura del pedido
     </button>
   `;
 
-  const mensajeWhatsApp = construirMensajeWhatsApp({
-    pedido,
-    nombre,
-    telefono,
-    total,
-    tipoEntrega,
-    referencias,
-    zonaSeleccionada,
-    metodoPago,
-    montoEfectivo,
-    items,
-    clienteLat,
-    clienteLng,
-  });
+  const mensajeWhatsApp =
+    construirMensajeWhatsApp({
+      pedido,
+      nombre,
+      telefono,
+      total,
+      tipoEntrega,
+      referencias,
+      zonaSeleccionada,
+      metodoPago,
+      montoEfectivo,
+      items,
+      clienteLat,
+      clienteLng,
+    });
 
   const botonWhatsApp = `
     <a
       class="btn-continuar btn-whatsapp no-captura"
-      href="https://wa.me/${WHATSAPP_NEGOCIO}?text=${encodeURIComponent(mensajeWhatsApp.texto)}"
+      href="https://wa.me/${WHATSAPP_NEGOCIO}?text=${encodeURIComponent(
+        mensajeWhatsApp.texto
+      )}"
       target="_blank"
       rel="noopener"
     >
-      ${mensajeWhatsApp.emojiEnviar} Enviar pedido a WhatsApp
+      ${mensajeWhatsApp.emojiEnviar}
+      Enviar pedido a WhatsApp
     </a>
   `;
 
   if (metodoPago === 'efectivo') {
-    const cambio = montoEfectivo - total;
+
+    const cambio =
+      montoEfectivo - total;
+
     return `
       <div class="checkout-confirmacion">
-        <h2 class="checkout-codigo">${pedido.codigo_pedido}</h2>
+
+        <h2 class="checkout-codigo">
+          ${pedido.codigo_pedido}
+        </h2>
+
         ${filaEntrega}
-        <p class="checkout-instrucciones">Pagas en efectivo ${tipoEntrega === 'domicilio' ? 'al repartidor' : 'al recoger'}.</p>
+
+        <p class="checkout-instrucciones">
+          Pagas en efectivo
+          ${
+            tipoEntrega === 'domicilio'
+              ? 'al repartidor'
+              : 'al recoger'
+          }.
+        </p>
 
         <div class="checkout-clabe">
-          <span>Pagas con $${montoEfectivo.toFixed(2)} — tu cambio: $${cambio.toFixed(2)}</span>
+          <span>
+            Pagas con $${montoEfectivo.toFixed(
+              2
+            )} —
+            tu cambio: $${cambio.toFixed(
+              2
+            )}
+          </span>
         </div>
 
         ${detalleItems}
 
-        <p class="checkout-total-final">Total: $${total.toFixed(2)}</p>
+        <p class="checkout-total-final">
+          Total: $${total.toFixed(2)}
+        </p>
 
         ${botonWhatsApp}
 
         ${botonCaptura}
 
-        <a href="#/menu" class="carrito-volver no-captura" style="display:block; text-align:center; margin-top:16px;">
+        <a
+          href="#/menu"
+          class="carrito-volver no-captura"
+          style="display:block; text-align:center; margin-top:16px;"
+        >
           Hacer otro pedido
         </a>
+
       </div>
     `;
   }
 
-  const concepto = `Pedido ${pedido.codigo_pedido}`;
+  const concepto =
+    `Pedido ${pedido.codigo_pedido}`;
 
   return `
     <div class="checkout-confirmacion">
-      <h2 class="checkout-codigo">${pedido.codigo_pedido}</h2>
+
+      <h2 class="checkout-codigo">
+        ${pedido.codigo_pedido}
+      </h2>
+
       ${filaEntrega}
-      <p class="checkout-instrucciones">Transfiere el total a esta cuenta, y luego abre WhatsApp para avisarle al negocio y mandar tu comprobante:</p>
+
+      <p class="checkout-instrucciones">
+        Transfiere el total a esta cuenta,
+        y luego abre WhatsApp para avisarle
+        al negocio y mandar tu comprobante:
+      </p>
 
       <div class="checkout-clabe">
-        <span>${CLABE_NEGOCIO}</span>
-        <button type="button" class="btn-copiar no-captura" data-copiar="${CLABE_NEGOCIO}">Copiar CLABE</button>
+
+        <span>
+          ${CLABE_NEGOCIO}
+        </span>
+
+        <button
+          type="button"
+          class="btn-copiar no-captura"
+          data-copiar="${CLABE_NEGOCIO}"
+        >
+          Copiar CLABE
+        </button>
+
       </div>
 
       <label class="campo">
-        <span>Concepto de transferencia</span>
+
+        <span>
+          Concepto de transferencia
+        </span>
+
         <div class="checkout-caja-copiar">
-          <input type="text" readonly value="${concepto}">
-          <button type="button" class="btn-copiar no-captura" data-copiar="${concepto}">Copiar</button>
+
+          <input
+            type="text"
+            readonly
+            value="${concepto}"
+          >
+
+          <button
+            type="button"
+            class="btn-copiar no-captura"
+            data-copiar="${concepto}"
+          >
+            Copiar
+          </button>
+
         </div>
+
       </label>
 
       ${detalleItems}
 
-      <p class="checkout-total-final">Total: $${total.toFixed(2)}</p>
+      <p class="checkout-total-final">
+        Total: $${total.toFixed(2)}
+      </p>
 
       ${botonWhatsApp}
 
-      <p class="checkout-instrucciones" style="margin-top:8px;">
-        El mensaje ya va a llegar con todo el detalle de tu pedido — solo falta que adjuntes la foto de tu comprobante antes de enviar.
+      <p
+        class="checkout-instrucciones"
+        style="margin-top:8px;"
+      >
+        El mensaje ya va a llegar con todo
+        el detalle de tu pedido — solo falta
+        que adjuntes la foto de tu comprobante
+        antes de enviar.
       </p>
 
       ${botonCaptura}
 
-      <a href="#/menu" class="carrito-volver no-captura" style="display:block; text-align:center; margin-top:16px;">
+      <a
+        href="#/menu"
+        class="carrito-volver no-captura"
+        style="display:block; text-align:center; margin-top:16px;"
+      >
         Hacer otro pedido
       </a>
+
     </div>
   `;
 }
 
-function montarBotonCaptura(container, codigoPedido) {
-  const boton = container.querySelector('#btn-guardar-captura');
+// ================================================================
+// BOTÓN DE CAPTURA
+// ================================================================
+
+function montarBotonCaptura(
+  container,
+  codigoPedido
+) {
+
+  const boton =
+    container.querySelector(
+      '#btn-guardar-captura'
+    );
+
   if (!boton) return;
 
-  boton.addEventListener('click', async () => {
-    const textoOriginal = boton.textContent;
-    boton.disabled = true;
-    boton.textContent = 'Generando imagen...';
+  boton.addEventListener(
+    'click',
+    async () => {
 
-    try {
-      const { default: html2canvas } = await import('https://esm.sh/html2canvas@1.4.1');
-      const elemento = container.querySelector('.checkout-confirmacion');
+      const textoOriginal =
+        boton.textContent;
 
-      const canvas = await html2canvas(elemento, {
-        backgroundColor: '#1A1613',
-        scale: 2,
-        onclone: (clonedDoc) => {
-          clonedDoc.querySelectorAll('.no-captura').forEach((el) => {
-            el.style.display = 'none';
-          });
-        },
-      });
+      boton.disabled = true;
 
-      const enlace = document.createElement('a');
-      enlace.download = `pedido-${codigoPedido}.png`;
-      enlace.href = canvas.toDataURL('image/png');
-      enlace.click();
-    } catch (error) {
-      console.error('No se pudo generar la captura:', error);
-      alert('No se pudo generar la captura. Intenta de nuevo o toma un screenshot manual.');
-    } finally {
-      boton.disabled = false;
-      boton.textContent = textoOriginal;
+      boton.textContent =
+        'Generando imagen...';
+
+      try {
+
+        const {
+          default: html2canvas
+        } = await import(
+          'https://esm.sh/html2canvas@1.4.1'
+        );
+
+        const elemento =
+          container.querySelector(
+            '.checkout-confirmacion'
+          );
+
+        const canvas =
+          await html2canvas(
+            elemento,
+            {
+              backgroundColor:
+                '#1A1613',
+
+              scale: 2,
+
+              onclone: (
+                clonedDoc
+              ) => {
+
+                clonedDoc
+                  .querySelectorAll(
+                    '.no-captura'
+                  )
+                  .forEach(
+                    (el) => {
+                      el.style.display =
+                        'none';
+                    }
+                  );
+              },
+            }
+          );
+
+        const enlace =
+          document.createElement(
+            'a'
+          );
+
+        enlace.download =
+          `pedido-${codigoPedido}.png`;
+
+        enlace.href =
+          canvas.toDataURL(
+            'image/png'
+          );
+
+        enlace.click();
+
+      } catch (error) {
+
+        console.error(
+          'No se pudo generar la captura:',
+          error
+        );
+
+        alert(
+          'No se pudo generar la captura. Intenta de nuevo o toma un screenshot manual.'
+        );
+
+      } finally {
+
+        boton.disabled = false;
+
+        boton.textContent =
+          textoOriginal;
+      }
     }
-  });
+  );
 }
 
-function montarBotonesCopiar(container) {
-  container.querySelectorAll('.btn-copiar').forEach((boton) => {
-    boton.addEventListener('click', async () => {
-      const texto = boton.dataset.copiar;
-      try {
-        await navigator.clipboard.writeText(texto);
-        const original = boton.textContent;
-        boton.textContent = '¡Copiado!';
-        setTimeout(() => (boton.textContent = original), 1500);
-      } catch (error) {
-        console.error('No se pudo copiar:', error);
-      }
+// ================================================================
+// BOTONES COPIAR
+// ================================================================
+
+function montarBotonesCopiar(
+  container
+) {
+
+  container
+    .querySelectorAll(
+      '.btn-copiar'
+    )
+    .forEach((boton) => {
+
+      boton.addEventListener(
+        'click',
+        async () => {
+
+          const texto =
+            boton.dataset.copiar;
+
+          try {
+
+            await navigator.clipboard
+              .writeText(texto);
+
+            const original =
+              boton.textContent;
+
+            boton.textContent =
+              '¡Copiado!';
+
+            setTimeout(
+              () =>
+                (boton.textContent =
+                  original),
+              1500
+            );
+
+          } catch (error) {
+
+            console.error(
+              'No se pudo copiar:',
+              error
+            );
+          }
+        }
+      );
     });
-  });
 }
